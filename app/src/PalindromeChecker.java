@@ -2,25 +2,24 @@ import java.util.Scanner;
 public class PalindromeChecker {
 
 
+
     public static void main(String[] args) {
         // Create Scanner object to read user input
         Scanner sc = new Scanner(System.in);
 
         // Prompt user to enter a string
         System.out.print("Enter a string: ");
-        String str = sc.nextLine();
+        String original = sc.nextLine();
 
-        // Reverse the string
-        String reversed = reverseString(str);
+        // Reverse the string using for loop
+        String reversed = reverseStringUsingLoop(original);
 
-        // Check if palindrome using conditional statement
-        if (str.equals(reversed)) {
-            // Result: It is a palindrome
-            System.out.println(str);
+        // Compare original and reversed using equals() method
+        if (original.equals(reversed)) {
+            System.out.println(original);
             System.out.println("It is a palindrome? true");
         } else {
-            // Result: It is not a palindrome
-            System.out.println(str);
+            System.out.println(original);
             System.out.println("It is a palindrome? false");
         }
 
@@ -28,8 +27,26 @@ public class PalindromeChecker {
         sc.close();
     }
 
-    // Helper method to reverse a string
-    private static String reverseString(String str) {
-        return new StringBuilder(str).reverse().toString();
+    /**
+     * Reverse string using for loop
+     * Demonstrates:
+     * - Loop (for loop): Iterate from end to start
+     * - String Concatenation (+): Build new string character by character
+     * - String Immutability: Creates new String objects at each concatenation
+     *
+     * @param str Original string to reverse
+     * @return Reversed string
+     */
+    private static String reverseStringUsingLoop(String str) {
+        String reversed = ""; // Empty string (String Literal)
+
+        // For loop: iterate from last character to first
+        for (int i = str.length() - 1; i >= 0; i--) {
+            // String concatenation (+): Creates new String object each time
+            // Demonstrates String Immutability - old string is unchanged
+            reversed = reversed + str.charAt(i);
+        }
+
+        return reversed;
     }
 }
