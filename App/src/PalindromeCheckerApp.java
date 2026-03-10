@@ -1,39 +1,78 @@
-// Palindrome service class
-class PalindromeChecker {
+import java.util.*;
 
-    // Method to check palindrome
+// Strategy Interface
+interface PalindromeStrategy {
+    boolean checkPalindrome(String input);
+}
+
+// Stack Strategy
+class StackStrategy implements PalindromeStrategy {
+
     public boolean checkPalindrome(String input) {
 
-        int start = 0;
-        int end = input.length() - 1;
+        Stack<Character> stack = new Stack<>();
 
-        while (start < end) {
-            if (input.charAt(start) != input.charAt(end)) {
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
+
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
-            start++;
-            end--;
         }
 
         return true;
     }
 }
 
-// Main application class
+// Deque Strategy
+class DequeStrategy implements PalindromeStrategy {
+
+    public boolean checkPalindrome(String input) {
+
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+// Context Class
+class PalindromeContext {
+
+    private PalindromeStrategy strategy;
+
+    public PalindromeContext(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean executeStrategy(String input) {
+        return strategy.checkPalindrome(input);
+    }
+}
+
+// Main Class
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        // Input string
-        String input = "racecar";
+        String input = "level";
 
-        // Create object of PalindromeChecker
-        PalindromeChecker checker = new PalindromeChecker();
+        // Choose algorithm strategy
+        PalindromeContext context = new PalindromeContext(new StackStrategy());
 
-        // Call method
-        boolean result = checker.checkPalindrome(input);
+        boolean result = context.executeStrategy(input);
 
-        // Display result
         if (result) {
             System.out.println(input + " is a Palindrome");
         } else {
