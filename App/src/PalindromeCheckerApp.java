@@ -1,82 +1,37 @@
-import java.util.*;
-
-// Strategy Interface
-interface PalindromeStrategy {
-    boolean checkPalindrome(String input);
-}
-
-// Stack Strategy
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String input) {
-
-        Stack<Character> stack = new Stack<>();
-
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
-
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-// Deque Strategy
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String input) {
-
-        Deque<Character> deque = new ArrayDeque<>();
-
-        for (char c : input.toCharArray()) {
-            deque.addLast(c);
-        }
-
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-// Context Class
-class PalindromeContext {
-
-    private PalindromeStrategy strategy;
-
-    public PalindromeContext(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean executeStrategy(String input) {
-        return strategy.checkPalindrome(input);
-    }
-}
-
-// Main Class
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         String input = "level";
 
-        // Choose algorithm strategy
-        PalindromeContext context = new PalindromeContext(new StackStrategy());
+        // Start time
+        long startTime = System.nanoTime();
 
-        boolean result = context.executeStrategy(input);
+        // Palindrome check
+        int start = 0;
+        int end = input.length() - 1;
+        boolean isPalindrome = true;
 
-        if (result) {
+        while (start < end) {
+            if (input.charAt(start) != input.charAt(end)) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
+        }
+
+        // End time
+        long endTime = System.nanoTime();
+
+        // Print result
+        if (isPalindrome) {
             System.out.println(input + " is a Palindrome");
         } else {
             System.out.println(input + " is NOT a Palindrome");
         }
+
+        // Execution time
+        System.out.println("Execution Time: " + (endTime - startTime) + " ns");
     }
 }
